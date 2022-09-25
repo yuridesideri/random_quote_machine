@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { ImTumblr, ImTwitter } from "react-icons/im";
 import axios from 'axios';
 import { useState } from 'react';
-
+import { motion } from 'framer-motion/dist/framer-motion'
 
 
 
@@ -99,7 +99,7 @@ export default function Wrapper(props) {
     }
 
     function tweeterIntentGenerator(str){
-        const stringWebIntent = "https://twitter.com/intent/tweet?hashtags=quotes&text=" + str.text + " -" + (str.author === null? "Unknown" : str.author);
+        const stringWebIntent = `https://twitter.com/intent/tweet?hashtags=quotes&text="${str.text}" -${(str.author === null? "Unknown" : str.author)}`;
         return stringWebIntent;
 
     }
