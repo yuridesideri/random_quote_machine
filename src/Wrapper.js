@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useId } from 'react';
 import styled from "styled-components"
 import { ImTumblr, ImTwitter } from "react-icons/im";
 import axios from 'axios';
-import { useState } from 'react';
-import { motion } from 'framer-motion/dist/framer-motion'
-
+import { motion, AnimatePresence } from 'framer-motion/dist/framer-motion'
 
 
 const backColor = "#ffffff";
 const buttonColor = "#f9f21b";
 
 const Wrapperstyle = styled.div`
+position: relative;
 width: 550px;
 background-color: ${backColor};
 border-radius: 10px;
@@ -18,7 +17,8 @@ padding: 15px;
 box-sizing: border-box;
 
 .quote-wrapper{
-    width: 100%;
+    width: 100%; 
+    top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -111,13 +111,19 @@ export default function Wrapper(props) {
     }
 
     return(
+            <AnimatePresence>
             <Wrapperstyle id="quote-box">
-                <div className='quote-wrapper'>
-                    <p id='text'>{'"' + quote.text + '"'}</p>
+                <motion.div key={useId() + quote.author} 
+                    initial={{ opacity: 0}}
+                    transition={{type: "spring", duration: 2}}
+                    animate={{ opacity: 1}} 
+                    exit={{opacity: 0}}
+                    className='quote-wrapper'>
+                    <motion.p id='text'>{'"' + quote.text + '"'}</motion.p>
                     <div>
                         <p id='author'>-{quote.author === null? 'Unknown' : quote.author}</p>
                     </div>
-                </div>
+                </motion.div>
                 <div className='interactions-wrapper'>
                     <div>
                     <a rel="noopener noreferrer" target="_blank" href={tweeterIntentGenerator(quote)} id="tweet-quote"><ImTwitter /></a>
@@ -126,5 +132,6 @@ export default function Wrapper(props) {
                     <button onClick={updateQuote} id='new-quote'>New quote</button>
                 </div>
             </Wrapperstyle>
+            </AnimatePresence>
     )
 };
